@@ -24,19 +24,19 @@ def get_filters():
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     while city not in ['new york city', 'chicago', 'washington']:
         print('These are the cities: new york city, chicago, washington')
-        city = input("Please enter City : ")
+        city = input("Please enter City : ").lower()
 
     # get user input for month (all, january, february, ... , june)
     while month not in ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september',
                         'october', 'november', 'december', 'all']:
         print('These are the options for Month: january, february, march, april, may, june, july, august, september, '
               'october, november, december, all')
-        month = input("please enter Month : ")
+        month = input("please enter Month : ").lower()
 
     # get user input for day of week (all, monday, tuesday, ... sunday)
     while day not in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']:
         print('These are options for Day: monday, tuesday, wednesday, thursday, friday, saturday, sunday, all')
-        day = input("Please enter Day : ")
+        day = input("Please enter Day : ").lower()
 
     print('-' * 40)
     return city, month, day
@@ -162,13 +162,17 @@ def user_stats(df, city):
     if city != 'washington':
         print('counts of gender types \n{} \n'.format(df['Gender'].value_counts()))
 
-    # Display earliest, most recent, and most common year of birth
+        # Display earliest, most recent, and most common year of birth
         print('Earliest DoB = {}\n'.format(int(df['Birth Year'].min())))
         print('Latest DoB = {}\n'.format(int(df['Birth Year'].max())))
         print('Common DoB = {}\n'.format(int(df['Birth Year'].mode())))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-' * 40)
+
+
+def raw_data(df):
+    print('\n First 5 rows of raw data\n{}'.format(df))
 
 
 def main():
@@ -180,6 +184,17 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df, city)
+
+        start = 0
+        end = 5
+        while True:
+            ans = input('\nWould you like to display raw data? yes or no\n')
+            if ans.lower() == 'yes':
+                raw_data(df.iloc[start:end])
+                start += 5
+                end += 5
+            else:
+                break
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
